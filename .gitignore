@@ -3,3 +3,4 @@ tmp
 *.pyc
 *.pyo
 .project
+*.DS_Store
