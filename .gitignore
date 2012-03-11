@@ -4,3 +4,4 @@ tmp
 *.pyo
 .project
 *.DS_Store
+build
