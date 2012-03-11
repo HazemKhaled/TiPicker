@@ -3,7 +3,7 @@ var win = Titanium.UI.createWindow({
 });
 
 var combobox = require('libs/combobox').createCombobox({
-	height : 120,
+	height : 252,
 	barColor : '#F8001D',
 	data : []
 });
@@ -17,7 +17,7 @@ var countryBtn = Ti.UI.createButton({
 
 win.add(countryBtn);
 
-countryBtn.addEventListener('click', function () {
+countryBtn.addEventListener('click', function() {
 	combobox.fireEvent('showMe');
 });
 
