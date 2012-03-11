@@ -16,7 +16,6 @@ var setHeight = function(height) {
 	view.height = height;
 	view.bottom = -height;
 	slide_out.bottom = -height;
-
 }
 var slide_in = Titanium.UI.createAnimation({
 	bottom : 0
@@ -64,9 +63,18 @@ var toolbar = Ti.UI.iOS.createToolbar({
 });
 
 var picker = Titanium.UI.createPicker({
-	top : 44
+	top : 44,
+	selectionIndicator : true
 });
 view.picker = picker;
+
+view.btn = function(btn) {
+
+	btn.addEventListener('click', function() {
+		view.picker.fireEvent('showMe');
+	});
+	return btn;
+}
 
 view.add(toolbar);
 view.add(picker);
