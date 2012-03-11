@@ -51,6 +51,9 @@ var doneBtn = Titanium.UI.createButton({
 });
 doneBtn.addEventListener('click', function() {
 	view.fireEvent('hideMe');
+	view.fireEvent('afterPickerHidden', {
+		selectedRow : picker.getSelectedRow(0)
+	});
 });
 var spacer = Titanium.UI.createButton({
 	systemButton : Titanium.UI.iPhone.SystemButton.FLEXIBLE_SPACE
@@ -73,6 +76,7 @@ view.btn = function(btn) {
 	btn.addEventListener('click', function() {
 		view.picker.fireEvent('showMe');
 	});
+	
 	return btn;
 }
 
