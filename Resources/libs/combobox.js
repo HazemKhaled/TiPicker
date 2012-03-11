@@ -6,10 +6,7 @@ exports.createCombobox = function(prams) {
 	}
 
 	if(prams.height) {
-		exports.height = prams.height;
-		view.height = exports.height;
-		view.bottom = -exports.height;
-		slide_out.bottom = -exports.height;
+		setHeight(prams.height);
 	}
 
 	return view;
@@ -21,6 +18,13 @@ exports.button = function(btn) {
 		alert('Opend');
 	});
 	return btn;
+}
+var setHeight = function(height) {
+	exports.height = height;
+	view.height = height;
+	view.bottom = -height;
+	slide_out.bottom = -height;
+
 }
 var slide_in = Titanium.UI.createAnimation({
 	bottom : 0
