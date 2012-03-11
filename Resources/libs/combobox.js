@@ -11,14 +11,6 @@ exports.createCombobox = function(prams) {
 
 	return view;
 }
-
-exports.button = function(btn) {
-
-	btn.addEventListener('click', function() {
-		alert('Opend');
-	});
-	return btn;
-}
 var setHeight = function(height) {
 	exports.height = height;
 	view.height = height;
@@ -74,5 +66,7 @@ var toolbar = Ti.UI.iOS.createToolbar({
 var picker = Titanium.UI.createPicker({
 	top : 44
 });
+view.picker = picker;
+
 view.add(toolbar);
 view.add(picker);
