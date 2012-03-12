@@ -2,11 +2,8 @@ var win = Titanium.UI.createWindow({
 	backgroundColor : '#fff'
 });
 
-var combobox = require('libs/combobox').createCombobox({
-	height : 252,
-	barColor : '#F8001D',
-	data : []
-});
+var combobox = require('libs/combobox');
+var myCombobox = new combobox();
 win.add(combobox);
 
 var data = [];
