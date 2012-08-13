@@ -1,76 +1,167 @@
-function comboBox(prams) {
+/**
+ *
+ */
 
-	if(prams.height == undefined) {
-		prams.height = 252;
-	}
+//TODO: add UI direction support
 
-	var slide_in = Titanium.UI.createAnimation({
-		bottom : 0
-	});
-	var slide_out = Titanium.UI.createAnimation({
-		bottom : -prams.height
-	});
+var picker = null;
+var iOSPickerContainer = null;
+var iOSButton = null
 
-	var view = Titanium.UI.createView({
-		height : prams.height,
-		bottom : -prams.height,
-		zIndex : 99
-	});
+if (Ti.Platform.getOsname() === 'iphone') {
 
-	// show and hide piker
-	view.addEventListener('showMe', function() {
-		view.animate(slide_in);
-	});
-	view.addEventListener('hideMe', function() {
-		view.animate(slide_out);
-	});
-	// toolbar
-	var cancelBtn = Titanium.UI.createButton({
-		title : L('Cancel'),
-		style : Titanium.UI.iPhone.SystemButtonStyle.BORDERED
-	});
-	cancelBtn.addEventListener('click', function() {
-		view.fireEvent('hideMe');
-	});
-	var doneBtn = Titanium.UI.createButton({
-		title : L('Done'),
-		style : Titanium.UI.iPhone.SystemButtonStyle.DONE
-	});
-	doneBtn.addEventListener('click', function() {
-		view.fireEvent('hideMe');
-		view.fireEvent('afterPickerHidden', {
-			selectedRow : view.picker.getSelectedRow(0)
-		});
-	});
-	var spacer = Titanium.UI.createButton({
-		systemButton : Titanium.UI.iPhone.SystemButton.FLEXIBLE_SPACE
-	});
+    // iphone bottom view
+    iOSPickerContainer = Ti.UI.createView({
+        height : 252,
+        bottom : -252,
+        zIndex : 99,
+        backgroundColor : 'red'
+    });
 
-	var toolbar = Ti.UI.iOS.createToolbar({
-		barColor : prams.barColor,
-		backgroundImage : '/images/bar.png',
-		top : 0,
-		items : [cancelBtn, spacer, doneBtn]
-	});
+    var slideUpAnimation = Ti.UI.createAnimation({
+        bottom : 0
+    });
+    var slideDownAnimation = Ti.UI.createAnimation({
+        bottom : -252
+    });
 
-	view.picker = Titanium.UI.createPicker({
-		top : 44,
-		selectionIndicator : true
-	});
-	//view.picker = picker;
+    // show and hide piker
+    iOSPickerContainer.addEventListener('slideUp', function() {
+        iOSPickerContainer.animate(slideUpAnimation);
+    });
+    iOSPickerContainer.addEventListener('slideDown', function() {
+        iOSPickerContainer.animate(slideDownAnimation);
+    });
 
-	view.btn = function(btn) {
+    // toolbar
+    var cancelBtn = Ti.UI.createButton({
+        title : L('Cancel'),
+        style : Ti.UI.iPhone.SystemButtonStyle.BORDERED
+    });
+    cancelBtn.addEventListener('click', function() {
+        iOSPickerContainer.fireEvent('slideDown');
+    });
 
-		btn.addEventListener('click', function() {
-			view.picker.fireEvent('showMe');
-		});
-		return btn;
-	}
+    var doneBtn = Ti.UI.createButton({
+        title : L('Done'),
+        style : Ti.UI.iPhone.SystemButtonStyle.DONE
+    });
+    doneBtn.addEventListener('click', afterSelect);
 
-	view.add(toolbar);
-	view.add(view.picker);
+    var toolbar = Ti.UI.iOS.createToolbar({
+        top : 0,
+        items : [cancelBtn, Ti.UI.createButton({
+            systemButton : Ti.UI.iPhone.SystemButton.FLEXIBLE_SPACE
+        }), doneBtn]
+    });
 
-	return view;
+    iOSPickerContainer.add(toolbar);
+
+} else if (Ti.Platform.getOsname() === 'ipad') {
+
+    // ipad popover
+    iOSPickerContainer = Ti.UI.iPad.createPopover({
+        width : 200,
+        height : 200,
+        title : 'Picker',
+        arrowDirection : Ti.UI.iPad.POPOVER_ARROW_DIRECTION_LEFT
+    });
+
+    //iOSPickerContainer.addEventListener('hide', afterSelect);
 }
 
-module.exports = comboBox;
+// iOS
+if (Ti.Platform.getOsname() !== 'android') {
+
+    var transform = Ti.UI.create2DMatrix();
+
+    iOSButton = Ti.UI.createTextField({
+        value : 'Test',
+        height : 40,
+        width : 300,
+        top : 60,
+        enabled : false,
+        borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
+        rightButton : Ti.UI.createButton({
+            style : Ti.UI.iPhone.SystemButton.DISCLOSURE,
+            transform : transform.rotate(90)
+        }),
+        rightButtonMode : Ti.UI.INPUT_BUTTONMODE_ALWAYS
+    });
+
+    iOSButton.addEventListener('click', function() {
+
+        if (Ti.Platform.getOsname() === 'ipad') {
+
+            iOSPickerContainer.show({
+                view : iOSButton,
+                animated : true
+            });
+        } else {
+            iOSPickerContainer.fireEvent('slideUp');
+        }
+    });
+}
+
+exports.init = function(prams) {
+
+    var iOSBtnProperties = ['left', 'right', 'top', 'bottom', 'width', 'height', 'title'];
+    var iOSBtnPrams = {};
+
+    if (iOSPickerContainer) {
+        for (var i in prams) {
+            if (iOSBtnProperties.indexOf(i) > -1) {
+                iOSButton[i] = prams[i];
+                delete prams[i];
+            }
+        }
+
+        // toolbar offfset
+        if (Ti.Platform.getOsname() === 'iphone') {
+            prams.top = 44;
+        }
+    }
+
+    picker = Ti.UI.createPicker(prams);
+    picker.addEventListener('change', afterSelect);
+
+    // iOS only
+    if (iOSPickerContainer) {
+
+        iOSPickerContainer.add(picker);
+    }
+
+}
+
+exports.getUI = function() {
+
+    if (Ti.Platform.getOsname() === 'android') {
+        return picker;
+    } else if (Ti.Platform.getOsname() === 'iphone') {
+        return [iOSButton, iOSPickerContainer];
+    } else if (Ti.Platform.getOsname() === 'ipad') {
+        return iOSButton;
+    }
+}
+
+exports.getPicker = function() {
+
+    return picker;
+}
+
+exports.getiOSPickerContainer = function() {
+
+    return iOSPickerContainer;
+}
+function afterSelect(e) {
+
+    if (Ti.Platform.getOsname() === 'iphone') {
+        //iOSPickerContainer.fireEvent('slideDown');
+    }
+
+    if (iOSButton) {
+        //iOSButton.setValue(e.row.changedName);
+        iOSButton.setValue(picker.getSelectedRow(0).changedName);
+    }
+
+}
