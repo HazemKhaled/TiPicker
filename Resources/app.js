@@ -2,9 +2,9 @@ var win = Titanium.UI.createWindow({
     backgroundColor : '#fff'
 });
 
-var combobox = require('libs/combobox');
+var comboboxMod = require('libs/combobox');
 
-combobox.init({
+var combobox = new comboboxMod({
     width : '60%',
     height : 70,
     top : 100,
@@ -13,6 +13,7 @@ combobox.init({
     //bottom : 100,
     selectionIndicator : true
 });
+
 
 win.add(combobox.getUI());
 
@@ -34,12 +35,10 @@ combobox.getPicker().addEventListener('change', function(e) {
 });
 
 // another one :)
-var combobox1 = require('libs/combobox');
-
-combobox1.init({
+var combobox1 = new comboboxMod({
     width : '40%',
     right : 100,
-    bottom : 100
+    top : 200
 });
 
 win.add(combobox1.getUI());
