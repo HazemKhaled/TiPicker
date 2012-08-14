@@ -27,7 +27,7 @@ win.add(picker1.getUI());
 var picker2 = new TiPicker({
     width : '40%',
     right : 100,
-    top : 200
+    bottom : 100
 });
 
 // add data 2 times
@@ -41,7 +41,10 @@ var picker3 = new TiPicker({
     height : 70,
     top : 100,
     left : 100,
-    selectionIndicator : true
+    selectionIndicator : true,
+    iOSButtonTitle : 'Right to left',
+    rtl : true,
+    title : 'select yours'
 });
 
 win.add(picker3.getUI());

@@ -2,15 +2,41 @@
  *
  */
 
-//TODO: add UI direction support
-
 module.exports = function(prams) {
 
     if (prams == undefined) {
         prams = {};
     }
 
-    var picker = null;
+    var iOSBtnProperties = ['left', 'right', 'top', 'bottom', 'width', 'height'];
+    var iOSBtnPrams = {
+        value : prams.hasOwnProperty('iOSButtonTitle') ? prams.iOSButtonTitle : '',
+        height : 40,
+        width : '90%',
+        enabled : false,
+        borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED
+    };
+
+    // merge prams
+    for (var i in prams) {
+        if (iOSBtnProperties.indexOf(i) > -1) {
+            iOSBtnPrams[i] = prams[i];
+
+            // remove positions if not android
+            if (Ti.Platform.getOsname() !== 'android') {
+                delete prams[i];
+            }
+        }
+    }
+
+    // toolbar offfset
+    if (Ti.Platform.getOsname() === 'iphone') {
+        prams.top = 44;
+    }
+
+    var picker = Ti.UI.createPicker(prams);
+    picker.addEventListener('change', afterSelect);
+
     var iOSPickerContainer = null;
     var iOSButton = null
 
@@ -72,31 +98,34 @@ module.exports = function(prams) {
         iOSPickerContainer = Ti.UI.iPad.createPopover({
             width : 200,
             height : 200,
-            title : 'Picker',
-            arrowDirection : Ti.UI.iPad.POPOVER_ARROW_DIRECTION_LEFT
+            title : prams.hasOwnProperty('title') ? prams.title : '',
+            arrowDirection : Ti.UI.iPad.POPOVER_ARROW_DIRECTION_ANY
         });
-
-        //iOSPickerContainer.addEventListener('hide', afterSelect);
     }
 
     // iOS
     if (Ti.Platform.getOsname() !== 'android') {
 
+        // add picker to popover or slider view
+        iOSPickerContainer.add(picker);
+
         var transform = Ti.UI.create2DMatrix();
 
-        iOSButton = Ti.UI.createTextField({
-            value : 'Test',
-            height : 40,
-            width : 300,
-            top : 60,
-            enabled : false,
-            borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-            rightButton : Ti.UI.createButton({
+        iOSButton = Ti.UI.createTextField(iOSBtnPrams);
+
+        if (prams.hasOwnProperty('rtl')) {
+            iOSButton.leftButton = Ti.UI.createButton({
                 style : Ti.UI.iPhone.SystemButton.DISCLOSURE,
                 transform : transform.rotate(90)
-            }),
-            rightButtonMode : Ti.UI.INPUT_BUTTONMODE_ALWAYS
-        });
+            });
+
+            iOSButton.setTextAlign(Ti.UI.TEXT_ALIGNMENT_RIGHT)
+        } else {
+            iOSButton.rightButton = Ti.UI.createButton({
+                style : Ti.UI.iPhone.SystemButton.DISCLOSURE,
+                transform : transform.rotate(90)
+            });
+        }
 
         iOSButton.addEventListener('click', function() {
 
@@ -110,32 +139,6 @@ module.exports = function(prams) {
                 iOSPickerContainer.fireEvent('slideUp');
             }
         });
-    }
-
-    var iOSBtnProperties = ['left', 'right', 'top', 'bottom', 'width', 'height', 'title'];
-    var iOSBtnPrams = {};
-
-    if (iOSPickerContainer) {
-        for (var i in prams) {
-            if (iOSBtnProperties.indexOf(i) > -1) {
-                iOSButton[i] = prams[i];
-                delete prams[i];
-            }
-        }
-
-        // toolbar offfset
-        if (Ti.Platform.getOsname() === 'iphone') {
-            prams.top = 44;
-        }
-    }
-
-    picker = Ti.UI.createPicker(prams);
-    picker.addEventListener('change', afterSelect);
-
-    // iOS only
-    if (iOSPickerContainer) {
-
-        iOSPickerContainer.add(picker);
     }
 
     this.getUI = function() {
