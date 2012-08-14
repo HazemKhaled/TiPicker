@@ -2,20 +2,7 @@ var win = Titanium.UI.createWindow({
     backgroundColor : '#fff'
 });
 
-var comboboxMod = require('libs/combobox');
-
-var combobox = new comboboxMod({
-    width : '60%',
-    height : 70,
-    top : 100,
-    //right : 100,
-    left : 100,
-    //bottom : 100,
-    selectionIndicator : true
-});
-
-
-win.add(combobox.getUI());
+// temp data
 
 var dataSource = ['Bananas', 'Strawberries', 'Mangos', 'Grapes'];
 var data = [];
@@ -27,6 +14,19 @@ for (var i in dataSource) {
         title : dataSource[i],
     }));
 }
+
+var comboboxMod = require('libs/combobox');
+var combobox = new comboboxMod({
+    width : '60%',
+    height : 70,
+    top : 100,
+    //right : 100,
+    left : 100,
+    //bottom : 100,
+    selectionIndicator : true
+});
+
+win.add(combobox.getUI());
 
 combobox.getPicker().add(data);
 
@@ -43,6 +43,7 @@ var combobox1 = new comboboxMod({
 
 win.add(combobox1.getUI());
 
+// add data 2 times
 combobox1.getPicker().add(data);
 combobox1.getPicker().add(data);
 
