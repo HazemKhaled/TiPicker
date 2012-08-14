@@ -8,13 +8,13 @@
         <target device="blackberry">false</target>
     </deployment-targets>
     <sdk-version>2.1.1.GA</sdk-version>
-    <id>com.combobox</id>
-    <name>combobox</name>
+    <id>org.TiPicker</id>
+    <name>TiPicker</name>
     <version>1.0</version>
-    <publisher>hazemkhaled</publisher>
-    <url>http://</url>
-    <description>not specified</description>
-    <copyright>2012 by hazemkhaled</copyright>
+    <publisher>Hazem Khaled</publisher>
+    <url>http://HazemKhaled.com</url>
+    <description>Titanium CommonJS Module to make Piker UI Componant in Android, iPhone (slide up/down) and iPad (popover)</description>
+    <copyright>MIT</copyright>
     <icon>appicon.png</icon>
     <persistent-wifi>false</persistent-wifi>
     <prerendered-icon>false</prerendered-icon>
