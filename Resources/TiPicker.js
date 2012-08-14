@@ -6,6 +6,10 @@
 
 module.exports = function(prams) {
 
+    if (prams == undefined) {
+        prams = {};
+    }
+
     var picker = null;
     var iOSPickerContainer = null;
     var iOSButton = null
