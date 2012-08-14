@@ -1,7 +1,10 @@
-TiPicker
-=======
+## TiPicker _**Hazem Khaled**_
 
-Titanium CommonJS Module to make Piker UI Componant in Android, iPhone (slide up/down) and iPad (popover)
+**Titanium** CommonJS Module to make Piker UI Componant in Android, iPhone (slide up/down) and iPad (popover)
+
+
+<img src="https://raw.github.com/HazemKhaled/TiPicker/master/Screenshots/android.png" /> <img src="https://raw.github.com/HazemKhaled/TiPicker/master/Screenshots/iPhone.png" /> <img src="https://raw.github.com/HazemKhaled/TiPicker/master/Screenshots/iPad.png" /> 
+
 
 Example [1]:-
 
