@@ -15,36 +15,41 @@ for (var i in dataSource) {
     }));
 }
 
-var comboboxMod = require('libs/combobox');
-var combobox = new comboboxMod({
-    width : '60%',
-    height : 70,
-    top : 100,
-    //right : 100,
-    left : 100,
-    //bottom : 100,
-    selectionIndicator : true
-});
+var TiPicker = require('TiPicker');
 
-win.add(combobox.getUI());
+var picker1 = new TiPicker();
 
-combobox.getPicker().add(data);
+picker1.getPicker().add(data);
 
-combobox.getPicker().addEventListener('change', function(e) {
-    //write ur code here, and use e.row
-});
+win.add(picker1.getUI());
 
 // another one :)
-var combobox1 = new comboboxMod({
+var picker2 = new TiPicker({
     width : '40%',
     right : 100,
     top : 200
 });
 
-win.add(combobox1.getUI());
-
 // add data 2 times
-combobox1.getPicker().add(data);
-combobox1.getPicker().add(data);
+picker2.getPicker().add(data);
+picker2.getPicker().add(data);
+
+win.add(picker2.getUI());
+
+var picker3 = new TiPicker({
+    width : '60%',
+    height : 70,
+    top : 100,
+    left : 100,
+    selectionIndicator : true
+});
+
+win.add(picker3.getUI());
+
+picker3.getPicker().add(data);
+
+picker3.getPicker().addEventListener('change', function(e) {
+    Ti.API.debug(e);
+});
 
 win.open();
