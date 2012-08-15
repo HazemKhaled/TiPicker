@@ -65,7 +65,7 @@ module.exports = function(prams) {
         // show and hide piker
         iOSPickerContainer.addEventListener('slideUp', function() {
             iOSPickerContainer.animate(slideUpAnimation);
-            alert(selectedRow);
+
             picker.setSelectedRow(0, selectedRow, true);
         });
         iOSPickerContainer.addEventListener('slideDown', function() {
@@ -168,6 +168,11 @@ module.exports = function(prams) {
     this.getiOSPickerContainer = function() {
 
         return iOSPickerContainer;
+    };
+
+    this.getiOSButton = function() {
+
+        return iOSButton;
     };
 
     function afterSelect(e) {
