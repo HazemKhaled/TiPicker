@@ -8,6 +8,8 @@ module.exports = function(prams) {
         prams = {};
     }
 
+    var selectedRow = prams.hasOwnProperty('selectedRow') ? prams.selectedRow : 0;
+
     var iOSBtnProperties = ['left', 'right', 'top', 'bottom', 'width', 'height'];
     var iOSBtnPrams = {
         value : prams.hasOwnProperty('iOSButtonTitle') ? prams.iOSButtonTitle : '',
@@ -37,6 +39,9 @@ module.exports = function(prams) {
     var picker = Ti.UI.createPicker(prams);
     picker.addEventListener('change', afterSelect);
 
+    // set selected on android nley
+    picker.setSelectedRow(0, selectedRow);
+
     var iOSPickerContainer = null;
     var iOSButton = null
 
@@ -60,6 +65,8 @@ module.exports = function(prams) {
         // show and hide piker
         iOSPickerContainer.addEventListener('slideUp', function() {
             iOSPickerContainer.animate(slideUpAnimation);
+            alert(selectedRow);
+            picker.setSelectedRow(0, selectedRow, true);
         });
         iOSPickerContainer.addEventListener('slideDown', function() {
             iOSPickerContainer.animate(slideDownAnimation);
@@ -135,6 +142,7 @@ module.exports = function(prams) {
                     view : iOSButton,
                     animated : true
                 });
+                picker.setSelectedRow(0, selectedRow, true);
             } else {
                 iOSPickerContainer.fireEvent('slideUp');
             }
@@ -169,6 +177,10 @@ module.exports = function(prams) {
         }
 
         if (iOSButton) {
+
+            // iPad only
+            selectedRow = e.rowIndex;
+
             //iOSButton.setValue(e.row.changedName);
             iOSButton.setValue(picker.getSelectedRow(0).changedName);
         }
@@ -176,5 +188,4 @@ module.exports = function(prams) {
     }
 
     return this;
-
 }
