@@ -38,3 +38,7 @@ Example [2] Properties:-
 		selectionIndicator : true	// iOS only
 	});
 	win.add(picker1.getUI());
+
+
+Thanks @rborn (Dan Tamas)
+http://cssgallery.info/making-a-combo-box-in-titanium-appcelerator-code-and-video/
